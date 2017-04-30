@@ -31,7 +31,7 @@ class ArticlesTable extends AbstractMigration
         $articles->addColumn('title', 'string')
              ->addColumn('content', 'string')
              ->addColumn('image', 'string')
-             ->addColumn('updated_at', 'timestamp')
+             ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
              ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
              ->addColumn('deleted', 'integer', ['default' => '0'])
              ->create();
