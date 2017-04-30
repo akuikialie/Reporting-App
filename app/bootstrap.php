@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 
@@ -11,4 +11,4 @@ $app = new App([
 	]);
 
 require __DIR__. '/container.php';
-require __DIR__. '/routing.php';
+require __DIR__. '/route/api.php';
