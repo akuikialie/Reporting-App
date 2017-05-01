@@ -23,3 +23,11 @@ $app->group('/user', function(){
     $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
     $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
 });
+
+$app->group('/item', function(){
+    $this->get('/list', 'App\Controllers\ItemController:index')->setname('item');
+    $this->get('/{id}', 'App\Controllers\ItemController:getDetailItem')->setname('detail_item');
+    $this->post('/create', 'App\Controllers\ItemController:createItem')->setname('create_item');
+    $this->put('/update/{id}', 'App\Controllers\ItemController:updateItem')->setname('update_item');
+    $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
+});
