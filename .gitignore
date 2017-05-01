@@ -1,1 +1,6 @@
-
+/vendor
+/app/setting.php
+/mysql_directory
+docker-compose.yml
+composer.lock
+Dockerfile
