@@ -22,4 +22,3 @@ phpmyadmin:
       - "8888:80"
     links:
       - db
-            

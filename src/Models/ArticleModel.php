@@ -3,13 +3,13 @@
 namespace App\Models;
 
 /**
-* 
+*
 */
 class ArticleModel extends BaseModel
 {
 	protected $table = 'articles';
 	protected $column = ['title', 'content', 'image', 'deleted'];
-	
+
 	function add(array $data)
 	{
 		$data = [

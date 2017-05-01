@@ -17,9 +17,15 @@ environments:
     development:
         adapter: mysql
         host: 172.17.0.1
+<<<<<<< HEAD
         name: reporting-app
         user: root
         pass: 'apple'
+=======
+        name: reporting_app
+        user: root
+        pass: '1234'
+>>>>>>> irsad/crud_item
         port: 3636
         charset: utf8
 
