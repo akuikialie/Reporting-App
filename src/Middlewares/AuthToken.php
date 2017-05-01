@@ -26,7 +26,7 @@ class AuthToken extends BaseMiddleware
             $response = $next($request, $response);
 
             // Tambah Waktu Token
-            $addTime['expired_at'] = date('Y-m-d H:i:s', strtotime($findUser['expired_at']. '+2 hour'));
+            $addTime['expired_at'] = date('Y-m-d H:i:s', strtotime($findUser['expired_at']. '+30 minute'));
 
             $userToken->update($addTime, 'user_id', $findUser['user_id']);
             return $response;
