@@ -26,7 +26,7 @@ abstract class BaseModel
                 return $query->fetchAll();
         }
 
-// Find 
+// Find
     public function find($column, $value)
         {
 
@@ -89,13 +89,12 @@ abstract class BaseModel
             $qb = $this->db->createQueryBuilder();
 
                 $qb->delete($this->table)
-                                 ->set('deleted', 1)
                                  ->where('id = ' . $id)
                                  ->execute();
         }
 
 // Paginate
-        
+
     public function paginate($page, $query, $limit)
     {
         $qb = $this->db->createQueryBuilder();
@@ -113,7 +112,7 @@ abstract class BaseModel
             'max_range' => $pages
             )
         );
-        
+
         $number = (int) $page;
         $range = $perpage * ($number - 1);
         // if ($page >= 2) {
@@ -129,4 +128,3 @@ abstract class BaseModel
     }
 
 }
-
