@@ -3,7 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\Users\UserModel;
-
+use App\Models\Users\UserToken;
 class UserController extends BaseController
 {
    public function index($request, $response)
@@ -103,6 +103,31 @@ class UserController extends BaseController
             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
         }
 
+            return $data;
+    }
+
+    public function login($request, $response)
+    {
+        $user = new UserModel($this->db);
+        $login = $user->find('username', $request->getParam('username'));
+
+        if (empty($login)) {
+            $data = $this->responseDetail(401, 'Errors', 'username is not registered');
+        } else {
+            $check = password_verify($request->getParam('password'), $login['password']);
+            if ($check) {
+                $token = new UserToken($this->db);
+                $token->setToken($login['id']);
+                $getToken = $token->find('user_id', $login['id']);
+
+                $key = [
+                    'key' => $getToken,
+                ];
+                $data = $this->responseDetail(201, 'Login Succes', $login, $key);
+            } else {
+            $data = $this->responseDetail(401, 'Errors', 'Wrong Password');
+            }
+        }
             return $data;
     }
 
