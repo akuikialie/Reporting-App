@@ -29,7 +29,7 @@ class RolesTable extends AbstractMigration
     {
         $roles = $this->table('roles');
         $roles->addColumn('name', 'string')
-             ->addColumn('updated_at', 'timestamp')
+             ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
              ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
              ->addColumn('deleted', 'integer', ['default' => '0'])
              ->create();

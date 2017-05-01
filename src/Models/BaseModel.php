@@ -16,6 +16,8 @@ abstract class BaseModel
         }
 
 // Get All
+
+
     public function getAll()
         {
             $qb = $this->db->createQueryBuilder();
