@@ -37,3 +37,17 @@ $app->group('/item', function(){
     $this->put('/update/{id}', 'App\Controllers\ItemController:updateItem')->setname('update_item');
     $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
 });
+
+$app->group('/user', function(){
+    $this->post('/login', 'App\Controllers\UserController:login')->setname('user.login');
+    $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
+    $this->post('/adduser', 'App\Controllers\UserController:createUsers')->setname('user.add');
+    $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
+    $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
+    $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+
+    // $this->post('/item/{id}', 'App\Controllers\UserController:itemUser')->setname('user.item');
+
+    $this->post('/item/{group}', 'App\Controllers\UserController:itemUser')->setname('user.item');
+
+});

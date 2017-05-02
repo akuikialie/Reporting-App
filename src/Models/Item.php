@@ -5,6 +5,7 @@ namespace App\Models;
 class Item extends BaseModel
 {
     protected $table = 'items';
+    protected $column = ['id', 'name'];
 
     public function create($data)
     {

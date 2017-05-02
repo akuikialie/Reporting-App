@@ -7,7 +7,6 @@ use Psr\Http\Message\ResponseInterface as Response;
 use App\Models\GroupModel;
 use App\Models\UserGroupModel;
 
-
 class GroupController extends BaseController
 {
 
@@ -79,7 +78,6 @@ class GroupController extends BaseController
 
 		return $data;
 	}
-
 	public function update(Request $request, Response $response, $args)
 	{
 		$group = new \App\Models\GroupModel($this->db);
@@ -104,7 +102,6 @@ class GroupController extends BaseController
 
 		if ($findGroup) {
 			$group->hardDelete($args['id']);
-
 			$data = $this->responseDetail(200, 'Succes', 'Group successfully deleted');
 		} else {
 			$data = $this->responseDetail(404, 'Error', 'Data Not Found');
@@ -208,3 +205,5 @@ class GroupController extends BaseController
 		return $data;
 	}
 }
+
+?>
