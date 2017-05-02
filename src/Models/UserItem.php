@@ -44,7 +44,19 @@ class UserItem extends BaseModel
         return $result->fetch();
     }
 
-    public function getItem($groupId, $userId)
+    public function findAll($column1, $val1)
+    {
+        $param1 = ':'.$column1;
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
+            ->from($this->table)
+            ->setParameter($param1, $val1)
+            ->where($column1 . ' = '. $param1);
+        $result = $qb->execute();
+        return $result->fetchAll();
+    }
+
+    public function getItemGroup($groupId, $userId)
     {
         $qb = $this->db->createQueryBuilder();
 
@@ -59,6 +71,22 @@ class UserItem extends BaseModel
         ->where('ui.user_id = :user_id')
         ->andWhere('ui.group_id = :group_id')
         ->setParameters($parameters);
+
+        $result = $qb->execute();
+
+        return $result->fetchAll();
+    }
+
+    public function getItem($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+
+
+        $qb->select('it.name', 'it.description', 'it.recurrent', 'it.start_date', 'it.end_date', 'it.status')
+        ->from($this->jointTable, 'it')
+        ->join('it', $this->table, 'ui', 'ui.item_id = it.id')
+        ->where('ui.user_id = :user_id')
+        ->setParameter(':user_id', $id);
 
         $result = $qb->execute();
 

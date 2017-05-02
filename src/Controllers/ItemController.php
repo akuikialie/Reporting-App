@@ -9,6 +9,7 @@ use App\Models\UserItem;
 
 class ItemController extends BaseController
 {
+    //Get all items
     public function index(Request $request, Response $response)
     {
         $item = new \App\Models\Item($this->db);
@@ -24,6 +25,7 @@ class ItemController extends BaseController
         return $data;
     }
 
+    //Get items user by group
     public function getItemUser(Request $request, Response $response, $args)
     {
         $userItem = new UserItem($this->db);
@@ -32,18 +34,40 @@ class ItemController extends BaseController
         $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
         $findItem = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItem($args['group'], $args['id']);
+        $getItem = $userItem->getItemGroup($args['group'], $args['id']);
 
         if ($findUserItem) {
             $data = $this->responseDetail(200, 'Data Available', $getItem);
         } else {
-            $data = $this->responseDetail(400, 'Error', 'item user not found');
+            $data = $this->responseDetail(400, 'Error', 'User item not found');
 
         }
 
         return $data;
     }
 
+    //Get all items user
+    public function getAllItemUser(Request $request, Response $response, $args)
+    {
+        $userItem = new UserItem($this->db);
+        $item     = new Item($this->db);
+
+        $findUserItem = $userItem->find('user_id', $args['id']);
+
+        $findItem  = $item->find('id', $findUserItem['item_id']);
+
+        $getItem = $userItem->getItem($args['id']);
+
+        if ($findUserItem) {
+            $data = $this->responseDetail(200, 'Data available', $getItem);
+        } else {
+            $data = $this->responseDetail(400, 'Error', 'User item not found');
+        }
+
+        return $data;
+    }
+
+    //Set item status
     public function setItemStatus(Request $request, Response $response, $args)
     {
         $userItem = new UserItem($this->db);
@@ -61,6 +85,7 @@ class ItemController extends BaseController
         return $data;
     }
 
+    //Get detail item by id
     public function getDetailItem(Request $request, Response $response, $args)
     {
         $item = new Item($this->db);
@@ -79,6 +104,7 @@ class ItemController extends BaseController
         return $this->responseWithJson($data);
     }
 
+    //Create item
     public function createItem(Request $request, Response $response)
     {
         $rules = [
@@ -119,6 +145,7 @@ class ItemController extends BaseController
         return $data;
     }
 
+    //Edit item
     public function updateItem(Request $request, Response $response, $args)
     {
         $item     = new Item($this->db);
