@@ -140,6 +140,36 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	public function getAllUserGroup(Request $request, Response $response, $args)
+	{
+		$userGroup = new \App\Models\UserGroupModel($this->db);
+		$finduserGroup = $userGroup->findUsers('group_id', $args['group']);
+		$findAll = $userGroup->findAll($args['group']);
+
+		if ($finduserGroup) {
+			$data = $this->responseDetail(200, 'Success', $findAll);
+		} else {
+			$data = $this->responseDetail(404, 'Error', 'User not found in group');
+		}
+
+		return $data;
+	}
+
+	public function getUserGroup(Request $request, Response $response, $args)
+	{
+		$userGroup = new \App\Models\UserGroupModel($this->db);
+		$finduserGroup = $userGroup->findUser('group_id', $args['group'], 'user_id', $args['id']);
+		$findUser = $userGroup->getUser($args['group'], $args['id']);
+
+		if ($finduserGroup) {
+			$data = $this->responseDetail(200, 'Success', $findUser);
+		} else {
+			$data = $this->responseDetail(404, 'Error', 'User not found in group');
+		}
+
+		return $data;
+	}
+
 	public function deleteUser(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
