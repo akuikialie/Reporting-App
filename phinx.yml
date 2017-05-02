@@ -16,25 +16,11 @@ environments:
 
     development:
         adapter: mysql
-<<<<<<< HEAD
         host: 172.17.0.1
-<<<<<<< HEAD
-        name: reporting-app
-        user: root
-        pass: 'apple'
-=======
-        name: reporting_app
-        user: root
-        pass: '1234'
->>>>>>> irsad/crud_item
-        port: 3636
-=======
-        host: db
         name: reporting
         user: root
-        pass: 'mustaqim'
-        port: 3306
->>>>>>> farhan/crud_user
+        pass: 'nrd113'
+        port: 3636
         charset: utf8
 
     testing:

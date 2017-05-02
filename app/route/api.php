@@ -10,10 +10,16 @@ $app->group('/article', function(){
 });
 
 $app->group('/group', function(){
+    $this->get('/find/{id}', 'App\Controllers\GroupController:findGroup');
     $this->get('/list', 'App\Controllers\GroupController:index');
     $this->put('/edit/{id}', 'App\Controllers\GroupController:update');
     $this->post('/add', 'App\Controllers\GroupController:add');
     $this->delete('/delete/{id}', 'App\Controllers\GroupController:delete');
+    $this->post('/user/add', 'App\Controllers\GroupController:setUserGroup');
+    $this->delete('/user/delete/{id}', 'App\Controllers\GroupController:deleteUser');
+    $this->put('/setpic/{group}/{id}', 'App\Controllers\GroupController:setAsPic');
+    $this->put('/setmember/{group}/{id}', 'App\Controllers\GroupController:setAsMember');
+    $this->put('/setguardian/{group}/{id}', 'App\Controllers\GroupController:setAsGuardian');
 });
 
 $app->group('/user', function(){

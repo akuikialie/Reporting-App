@@ -36,6 +36,7 @@ class ItemsTable extends AbstractMigration
              ->addColumn('group_id', 'integer')
              ->addColumn('updated_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP','update' => 'CURRENT_TIMESTAMP'])
              ->addColumn('created_at', 'timestamp', ['default' => 'CURRENT_TIMESTAMP'])
+             ->addColumn('status', 'integer', ['default' => '0'])
              ->addColumn('deleted', 'integer', ['default' => '0'])
              ->addForeignKey('group_id', 'groups', 'id', ['delete' => 'CASCADE', 'update' => 'NO_ACTION'])
              ->create();

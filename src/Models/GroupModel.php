@@ -18,6 +18,15 @@ class GroupModel extends BaseModel
 
 		return $this->db->lastInsertId();
 	}
+
+	public function getAllData()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
+            ->from($this->table);
+        $query = $qb->execute();
+        return $query->fetchAll();
+    }
 }
 
 ?>

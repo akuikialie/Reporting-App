@@ -4,3 +4,4 @@
 docker-compose.yml
 composer.lock
 Dockerfile
+phinx.yml
