@@ -13,8 +13,8 @@ class AdminMiddleware extends BaseMiddleware
 
         $userToken = new App\Models\Users\UserToken($this->container->db);
         $findToken = $userToken->find('token', $token);
-        var_dump($token);
-        die();
+        // var_dump($token);
+        // die();
 
 
         $users = new App\Models\Users\UserModel($this->container->db);

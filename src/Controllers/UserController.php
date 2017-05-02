@@ -131,4 +131,54 @@ class UserController extends BaseController
             return $data;
     }
 
+   public function itemUser($request, $response, $args)
+   {
+        $user = new UserModel($this->db);
+        $findUser = $user->find('id', $request->getParsedBody()['user_id']);
+        $group = new \App\Models\GroupModel($this->db);
+        $findGroup = $group->find('id', $args['group']);
+
+        $token = $request->getHeader('Authorization')[0];
+
+        $userToken = new \App\Models\Users\UserToken($this->db);
+
+        if ($findUser && $findGroup) {
+        $data['user_id'] = $findUser['id'];
+        $item = new \App\Models\UserItem($this->db);
+        // $findUserGroup = $item->findUser('user_id', $args['id'], 'group_id', $args['group']);
+
+        $this->validator->rule('required', ['item_id', 'user_id']);
+        $this->validator->rule('integer', ['id']);
+
+
+        if ($this->validator->validate()) {
+            $item->setItem($request->getParsedBody(), $args['group']);
+            $data = $request->getParsedBody();
+
+            
+            $data = $this->responseDetail(201, 'Succes managed to select the item', $data, $findUser);
+        } else {
+            $data['status_code'] = 400;
+            $data['status_message'] = "Error";
+            $data['data'] = $this->validator->errors();
+
+            $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
+
+
+        }
+            return $data;
+            $items = $user->find('id', $args['id']);
+            $item = $request->getParsedBody();
+
+            $data = $this->responseDetail(201, 'user Succes Purchased', $items, $item);
+            
+            
+        } else {
+            $data = $this->responseDetail(404, 'Error', 'user Not Found');
+        }
+
+        return $data;
+
+        }
+
 }
