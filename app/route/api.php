@@ -1,9 +1,10 @@
-<?php
+ <?php
 
 $app->get('/', 'App\Controllers\HomeController:index')->setName('home');
 
 $app->group('/article', function(){
     $this->get('/list', 'App\Controllers\ArticleController:index')->setName('article.list');
+    $this->get('/find/{id}', 'App\Controllers\ArticleController:findArticle')->setName('article.find');
     $this->put('/edit/{id}', 'App\Controllers\ArticleController:update');
     $this->post('/add', 'App\Controllers\ArticleController:add');
     $this->delete('/delete/{id}', 'App\Controllers\ArticleController:delete');
@@ -38,16 +39,16 @@ $app->group('/item', function(){
     $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
 });
 
-$app->group('/user', function(){
-    $this->post('/login', 'App\Controllers\UserController:login')->setname('user.login');
-    $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
-    $this->post('/adduser', 'App\Controllers\UserController:createUsers')->setname('user.add');
-    $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
-    $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
-    $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+// $app->group('/user', function(){
+//     $this->post('/login', 'App\Controllers\UserController:login')->setname('user.login');
+//     $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
+//     $this->post('/adduser', 'App\Controllers\UserController:createUsers')->setname('user.add');
+//     $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
+//     $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
+//     $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
 
     // $this->post('/item/{id}', 'App\Controllers\UserController:itemUser')->setname('user.item');
 
-    $this->post('/item/{group}', 'App\Controllers\UserController:itemUser')->setname('user.item');
+//     $this->post('/item/{group}', 'App\Controllers\UserController:itemUser')->setname('user.item');
 
-});
+// });

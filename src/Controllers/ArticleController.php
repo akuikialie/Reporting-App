@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
-use App\Models\ArticleModel;
 
 /**
 *
@@ -30,6 +29,19 @@ class ArticleController extends BaseController
 			}
 		} else {
 			$data = $this->responseDetail(204, 'Succes', 'No Content');
+		}
+
+		return $data;
+	}
+	public function findArticle(Request $request, Response $response, $args)
+	{
+		$article = new \App\Models\ArticleModel($this->db);
+		$findArticle = $article->find('id', $args['id']);
+
+		if ($findArticle) {
+			$data = $this->responseDetail(200, 'Data Available', $findArticle);
+		} else {
+			$data = $this->responseDetail(404, 'Error', 'Data Not Found');
 		}
 
 		return $data;
