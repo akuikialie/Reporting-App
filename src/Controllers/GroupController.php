@@ -84,7 +84,7 @@ class GroupController extends BaseController
 	{
 		$group = new \App\Models\GroupModel($this->db);
 		$findGroup = $group->find('id', $args['id']);
-		
+
 		if ($findGroup) {
 			$group->updateData($request->getParsedBody(), $args['id']);
 			$afterUpdate = $group->find('id', $args['id']);
@@ -146,6 +146,7 @@ class GroupController extends BaseController
 	public function deleteUser(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
+		$finduserGroup = $userGroup->findUser('user_id', $args['id'], 'group_id', $args['group']);
 		$finduserGroup = $userGroup->find('user_id', $args['id']);
 
 		if ($finduserGroup) {
@@ -162,7 +163,7 @@ class GroupController extends BaseController
 	public function setAsMember(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
-		$finduserGroup = $userGroup->find('user_id', $args['id']);
+		$finduserGroup = $userGroup->findUser('user_id', $args['id'], 'group_id', $args['group']);
 
 		if ($finduserGroup) {
 			$userGroup->setUser($finduserGroup['id']);
