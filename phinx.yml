@@ -16,10 +16,10 @@ environments:
 
     development:
         adapter: mysql
-        host: 172.17.0.1
+        host: db
         name: reporting
         user: root
-        pass: 'nrd113'
+        pass: 'mustaqim'
         port: 3636
         charset: utf8
 

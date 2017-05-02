@@ -15,7 +15,7 @@ class UserController extends BaseController
 
             if ($getUser) {
                     $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-
+                    
                     $get = $user->paginate($page, $getUser, 5);
 
                     if ($get) {
@@ -30,6 +30,20 @@ class UserController extends BaseController
             return $data;
 
         }
+
+    // public function index($request, $response)
+    // {
+    //     $user = new UserModel($this->db);
+    //     $setUser = $user->getAllUser();
+
+    //     if ($setUser) 
+    //     {
+    //         $data = $this->responseDetail(201, 'Success', 'Create User Succes', $setUser);   
+    //     } else {
+    //         $data = $this->responseDetail(404, 'Error', 'Create User Succes');
+    //     }
+    //         return $data;
+    // }
 
     public function createUsers($request, $response)
     {

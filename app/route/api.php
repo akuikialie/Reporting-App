@@ -22,14 +22,6 @@ $app->group('/group', function(){
     $this->put('/setguardian/{group}/{id}', 'App\Controllers\GroupController:setAsGuardian');
 });
 
-$app->group('/user', function(){
-    $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
-    $this->post('/add', 'App\Controllers\UserController:createUsers')->setname('user.add');
-    $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
-    $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
-    $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
-});
-
 $app->group('/item', function(){
     $this->get('/list', 'App\Controllers\ItemController:index')->setname('item');
     $this->get('/{id}', 'App\Controllers\ItemController:getDetailItem')->setname('detail_item');
