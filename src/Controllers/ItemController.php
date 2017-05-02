@@ -16,8 +16,12 @@ class ItemController extends BaseController
 
         $getItems = $item->getAll();
 
+        $countItems = count($getItems);
+
         if ($getItems) {
-            $data = $this->responseDetail(200, 'Data Available', $getItems);
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $paginate = $item->paginate($page, $getItems, 10);
+            $data = $this->responseDetail(200, 'Data Available', $paginate, $this->paginate($countItems, 10, $page, ceil($countItems/10)));
         } else {
             $data = $this->responseDetail(400, 'Data not found', null);
         }
@@ -32,12 +36,17 @@ class ItemController extends BaseController
         $item = new Item($this->db);
 
         $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
+
         $findItem = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItemGroup($args['group'], $args['id']);
 
         if ($findUserItem) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+
+            $getItem = $userItem->getItemGroup($args['group'], $args['id'])->setPaginate($page, 10);
+
             $data = $this->responseDetail(200, 'Data Available', $getItem);
+
         } else {
             $data = $this->responseDetail(400, 'Error', 'User item not found');
 
@@ -56,9 +65,12 @@ class ItemController extends BaseController
 
         $findItem  = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItem($args['id']);
 
         if ($findUserItem) {
+            $page = !$request->getQueryParam('page') ?  1 : $request->getQueryParam('page');
+
+            $getItem = $userItem->getItem($args['id'])->setPaginate($page, 10);
+
             $data = $this->responseDetail(200, 'Data available', $getItem);
         } else {
             $data = $this->responseDetail(400, 'Error', 'User item not found');
