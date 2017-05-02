@@ -22,13 +22,13 @@ $app->group('/group', function(){
     $this->put('/setguardian/{group}/{id}', 'App\Controllers\GroupController:setAsGuardian');
 });
 
-$app->group('/user', function(){
-    $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
-    $this->post('/add', 'App\Controllers\UserController:createUsers')->setname('user.add');
-    $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
-    $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
-    $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
-});
+// $app->group('/user', function(){
+//     $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
+//     $this->post('/add', 'App\Controllers\UserController:createUsers')->setname('user.add');
+//     $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
+//     $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
+//     $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+// });
 
 $app->group('/item', function(){
     $this->get('/list', 'App\Controllers\ItemController:index')->setname('item');
@@ -36,6 +36,8 @@ $app->group('/item', function(){
     $this->post('/create', 'App\Controllers\ItemController:createItem')->setname('create_item');
     $this->put('/update/{id}', 'App\Controllers\ItemController:updateItem')->setname('update_item');
     $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
+    $this->get('/{group}/{id}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
+    $this->post('/{group}/{id}', '\App\Controllers\ItemController:setItemStatus')->setname('item_status');
 });
 
 $app->group('/user', function(){

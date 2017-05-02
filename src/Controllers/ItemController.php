@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use App\Models\Item;
+use App\Models\UserItem;
 
 class ItemController extends BaseController
 {
@@ -18,6 +19,43 @@ class ItemController extends BaseController
             $data = $this->responseDetail(200, 'Data Available', $getItems);
         } else {
             $data = $this->responseDetail(400, 'Data not found', null);
+        }
+
+        return $data;
+    }
+
+    public function getItemUser(Request $request, Response $response, $args)
+    {
+        $userItem = new UserItem($this->db);
+        $item = new Item($this->db);
+
+        $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
+        $findItem = $item->find('id', $findUserItem['item_id']);
+
+        $getItem = $userItem->getItem($args['group'], $args['id']);
+
+        if ($findUserItem) {
+            $data = $this->responseDetail(200, 'Data Available', $getItem);
+        } else {
+            $data = $this->responseDetail(400, 'Error', 'item user not found');
+
+        }
+
+        return $data;
+    }
+
+    public function setItemStatus(Request $request, Response $response, $args)
+    {
+        $userItem = new UserItem($this->db);
+
+        $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
+
+
+        if ($findUserItem) {
+            $userItem->setStatusItem($findUserItem['id']);
+            $data = $this->responseDetail(200, 'Item done', $findUserItem);
+        } else {
+            $data = $this->responseDetail(400, 'error', 'Item not found');
         }
 
         return $data;
