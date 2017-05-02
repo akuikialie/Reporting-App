@@ -38,6 +38,7 @@ $app->group('/item', function(){
     $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
     $this->get('/{group}/{id}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
     $this->post('/{group}/{id}', '\App\Controllers\ItemController:setItemStatus')->setname('item_status');
+    $this->get('/list/user/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
 });
 
 $app->group('/user', function(){

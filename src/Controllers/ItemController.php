@@ -32,13 +32,34 @@ class ItemController extends BaseController
         $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
         $findItem = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItem($args['group'], $args['id']);
+        $getItem = $userItem->getItemGroup($args['group'], $args['id']);
 
         if ($findUserItem) {
             $data = $this->responseDetail(200, 'Data Available', $getItem);
         } else {
-            $data = $this->responseDetail(400, 'Error', 'item user not found');
+            $data = $this->responseDetail(400, 'Error', 'User item not found');
 
+        }
+
+        return $data;
+    }
+
+    public function getAllItemUser(Request $request, Response $response, $args)
+    {
+        $userItem = new UserItem($this->db);
+        $item     = new Item($this->db);
+
+        $findUserItem = $userItem->find('user_id', $args['id']);
+
+        $findItem  = $item->find('id', $findUserItem['item_id']);
+        // var_dump($findUserItem['item_id']);
+        // die();
+        $getItem = $userItem->getItem($args['id']);
+
+        if ($findUserItem) {
+            $data = $this->responseDetail(200, 'Data available', $getItem);
+        } else {
+            $data = $this->responseDetail(400, 'Error', 'User item not found');
         }
 
         return $data;
