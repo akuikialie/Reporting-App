@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 <?php
+=======
+<?php
+>>>>>>> afri/fix-article
 
 namespace App\Controllers;
 
@@ -6,12 +10,9 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use App\Models\ArticleModel;
 
-/**
-*
-*/
+
 class ArticleController extends BaseController
 {
-
 	function index(Request $request, Response $response)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
@@ -38,19 +39,19 @@ class ArticleController extends BaseController
 	public function add(Request $request, Response $response)
 	{
 		$rules = [
-			'required' => [
-				['title'],
-				['content'],
-				['image'],
-			]
+		'required' => [
+		['title'],
+		['content'],
+		['image'],
+		]
 		];
 
 		$this->validator->rules($rules);
 
 		$this->validator->labels([
-			'title' 	=>	'Title',
-			'content'	=>	'Content',
-			'image'		=>	'Image',
+		'title' 	=>	'Title',
+		'content'	=>	'Content',
+		'image'		=>	'Image',
 		]);
 
 		if ($this->validator->validate()) {
@@ -60,18 +61,22 @@ class ArticleController extends BaseController
 			$findArticle = $article->find('id', $add);
 
 			$data = $this->responseDetail(201, 'Succes Add Article', $findArticle);
+
 		} else {
 			$data = $this->responseDetail(400, 'Errors', $this->validator->errors());
 		}
 
 		return $data;
 	}
+
+	//Edit article
 	public function update(Request $request, Response $response, $args)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
 		$findArticle = $article->find('id', $args['id']);
 		if ($findArticle) {
 			$article->updateData($request->getParsedBody(), $args['id']);
+
 			$afterUpdate = $article->find('id', $args['id']);
 
 			$data = $this->responseDetail(200, 'Success Update Data', $afterUpdate);
@@ -82,6 +87,7 @@ class ArticleController extends BaseController
 		return $data;
 	}
 
+	//Delete article
 	public function delete(Request $request, Response $response, $args)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
@@ -98,5 +104,6 @@ class ArticleController extends BaseController
 		return $data;
 	}
 }
+
 
 ?>

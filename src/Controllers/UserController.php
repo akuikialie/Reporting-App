@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Controllers;
 
@@ -6,31 +6,40 @@ use App\Models\Users\UserModel;
 use App\Models\Users\UserToken;
 class UserController extends BaseController
 {
-   public function index($request, $response)
-        {
-            $user = new UserModel($this->db);
+    //Get all user
+    public function index($request, $response)
+    {
+        $user = new UserModel($this->db);
 
-            $getUser = $user->getAllUser();
-            $countUser = count($getUser);
+        $getUser = $user->getAllUser();
+        $countUser = count($getUser);
 
+<<<<<<< HEAD
             if ($getUser) {
                     $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
                     
                     $get = $user->paginate($page, $getUser, 5);
+=======
+        if ($getUser) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
 
-                    if ($get) {
-                            $data = $this->responseDetail(200, 'Data Available', $get, $this->paginate($countUser, 5, $page, ceil($countUser/5)));
-                    } else {
-                            $data = $this->responseDetail(404, 'Error', 'Data Not Found');
-                    }
+            $get = $user->paginate($page, $getUser, 5);
+>>>>>>> mitschool/fix-all-crud
+
+            if ($get) {
+                $data = $this->responseDetail(200, 'Data Available', $get, $this->paginate($countUser, 5, $page, ceil($countUser/5)));
             } else {
-                    $data = $this->responseDetail(204, 'Success', 'No Content');
+                $data = $this->responseDetail(404, 'Error', 'Data Not Found');
             }
-
-            return $data;
-
+        } else {
+            $data = $this->responseDetail(204, 'Success', 'No Content');
         }
 
+        return $data;
+
+    }
+
+<<<<<<< HEAD
     // public function index($request, $response)
     // {
     //     $user = new UserModel($this->db);
@@ -45,6 +54,9 @@ class UserController extends BaseController
     //         return $data;
     // }
 
+=======
+    //Create user account
+>>>>>>> mitschool/fix-all-crud
     public function createUsers($request, $response)
     {
         $this->validator->rule('required', ['name', 'email', 'username', 'password', 'gender', 'address', 'phone', 'image']);
@@ -62,9 +74,10 @@ class UserController extends BaseController
         } else {
             $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
         }
-            return $data;
+        return $data;
     }
 
+    //Delete user account
     public function deleteUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
@@ -74,12 +87,13 @@ class UserController extends BaseController
             $user->hardDelete($args['id']);
             $data['id'] = $args['id'];
             $data = $this->responseDetail(200, 'Succes', 'Data Has Been Deleted', $data);
-         } else {
+        } else {
             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
-         }
-            return $data;
+        }
+        return $data;
     }
 
+    //Delete User
     public function updateUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
@@ -98,14 +112,15 @@ class UserController extends BaseController
 
                 $data = $this->responseDetail(200, 'Succes', 'Update Data Succes', $data);
             } else {
-                $data = $this->responseDetail(400, 'Errors', $this->validator->errors());              
+                $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
             }
         } else {
-             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
+            $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
         }
-            return $data;
+        return $data;
     }
 
+    //Find User by id
     public function findUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
@@ -117,9 +132,10 @@ class UserController extends BaseController
             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
         }
 
-            return $data;
+        return $data;
     }
 
+    //User login
     public function login($request, $response)
     {
         $user = new UserModel($this->db);
@@ -135,18 +151,19 @@ class UserController extends BaseController
                 $getToken = $token->find('user_id', $login['id']);
 
                 $key = [
-                    'key' => $getToken,
+                'key' => $getToken,
                 ];
                 $data = $this->responseDetail(201, 'Login Succes', $login, $key);
             } else {
-            $data = $this->responseDetail(401, 'Errors', 'Wrong Password');
+                $data = $this->responseDetail(401, 'Errors', 'Wrong Password');
             }
         }
-            return $data;
+        return $data;
     }
 
-   public function itemUser($request, $response, $args)
-   {
+    //Set item to user in group
+    public function setItemUser($request, $response, $args)
+    {
         $user = new UserModel($this->db);
         $findUser = $user->find('id', $request->getParsedBody()['user_id']);
         $group = new \App\Models\GroupModel($this->db);
@@ -157,42 +174,38 @@ class UserController extends BaseController
         $userToken = new \App\Models\Users\UserToken($this->db);
 
         if ($findUser && $findGroup) {
-        $data['user_id'] = $findUser['id'];
-        $item = new \App\Models\UserItem($this->db);
-        // $findUserGroup = $item->findUser('user_id', $args['id'], 'group_id', $args['group']);
+            $data['user_id'] = $findUser['id'];
+            $item = new \App\Models\UserItem($this->db);
+            // $findUserGroup = $item->findUser('user_id', $args['id'], 'group_id', $args['group']);
 
-        $this->validator->rule('required', ['item_id', 'user_id']);
-        $this->validator->rule('integer', ['id']);
+            $this->validator->rule('required', ['item_id', 'user_id']);
+            $this->validator->rule('integer', ['id']);
 
-
-        if ($this->validator->validate()) {
-            $item->setItem($request->getParsedBody(), $args['group']);
-            $data = $request->getParsedBody();
-
-            
-            $data = $this->responseDetail(201, 'Succes managed to select the item', $data, $findUser);
-        } else {
-            $data['status_code'] = 400;
-            $data['status_message'] = "Error";
-            $data['data'] = $this->validator->errors();
-
-            $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
+            if ($this->validator->validate()) {
+                $item->setItem($request->getParsedBody(), $args['group']);
+                $data = $request->getParsedBody();
 
 
-        }
+                $data = $this->responseDetail(201, 'Succes managed to select the item', $data, $findUser);
+            } else {
+                $data['status_code'] = 400;
+                $data['status_message'] = "Error";
+                $data['data'] = $this->validator->errors();
+
+                $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
+            }
+
             return $data;
+
             $items = $user->find('id', $args['id']);
             $item = $request->getParsedBody();
 
             $data = $this->responseDetail(201, 'user Succes Purchased', $items, $item);
-            
-            
         } else {
             $data = $this->responseDetail(404, 'Error', 'user Not Found');
         }
 
         return $data;
 
-        }
-
+    }
 }

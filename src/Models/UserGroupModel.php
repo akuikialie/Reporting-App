@@ -5,6 +5,8 @@ namespace App\Models;
 class UserGroupModel extends BaseModel
 {
 	protected $table = 'user_group';
+	protected $joinTable = 'users';
+
 	protected $column = ['group_id', 'user_id', 'status'];
 
 	function add(array $data)
@@ -17,6 +19,18 @@ class UserGroupModel extends BaseModel
 
 		return $this->db->lastInsertId();
 	}
+
+	public function findUsers($column, $value)
+    {
+        $param = ':'.$column;
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
+            ->from($this->table)
+            ->setParameter($param, $value)
+            ->where($column . ' = '. $param);
+        $result = $qb->execute();
+        return $result->fetchAll();
+    }
 
 	public function findUser($column1, $val1, $column2, $val2)
 	{
@@ -58,6 +72,36 @@ class UserGroupModel extends BaseModel
  	   	   ->where('id = ' . $id)
 		   ->execute();
 	}
+
+	public function findAll($groupId)
+    {
+        $qb = $this->db->createQueryBuilder();
+
+        $this->query = $qb->select('users.*')
+        	->from($this->jointTable, 'users')
+        	->join('users', $this->table, 'user_group', 'users.id = user_group.user_id')
+        	->where('user_group.group_id = :id')
+        	->setParameter(':id', $groupId);
+        // $result = $qb->execute();
+        return $this;
+    }
+
+	public function getUser($groupId, $userId)
+   {
+	   $qb = $this->db->createQueryBuilder();
+	   $parameters = [
+		   ':user_id' => $userId,
+		   ':group_id' => $groupId
+	   ];
+	   $qb->select('users.name', 'users.email', 'users.gender', 'users.address', 'users.image','users.phone')
+	   ->from($this->jointTable, 'users')
+	   ->join('users', $this->table, 'ug', 'ug.user_id = users.id')
+	   ->where('ug.user_id = :user_id')
+	   ->andWhere('ug.group_id = :group_id')
+	   ->setParameters($parameters);
+	   $result = $qb->execute();
+	   return $result->fetchAll();
+   }
 }
 
 ?>

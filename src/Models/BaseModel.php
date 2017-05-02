@@ -10,11 +10,11 @@ abstract class BaseModel
     protected $qb;
 
     public function __construct($db)
-    {
-        $this->db = $db;
-    }
+        {
+            $this->db = $db;
+        }
 
-    // Get All
+// Get All
     public function getAll()
     {
         $qb = $this->db->createQueryBuilder();
@@ -25,7 +25,7 @@ abstract class BaseModel
         return $query->fetchAll();
     }
 
-    // Find
+// Find
     public function find($column, $value)
     {
         $param = ':'.$column;
@@ -38,7 +38,7 @@ abstract class BaseModel
         return $result->fetch();
     }
 
-    // Craete Data
+// Craete Data
     public function createData(array $data)
     {
         $valuesColumn = [];
@@ -57,38 +57,39 @@ abstract class BaseModel
             ->execute();
     }
 
-    // Update Data
-    public function updateData(array $data, $id)
-    {
-        $valuesColumn = [];
-        $valuesData = [];
-        $qb = $this->db->createQueryBuilder();
+// Update Data
+     public function updateData(array $data, $id)
+     {
+         $valuesColumn = [];
+         $valuesData = [];
+         $qb = $this->db->createQueryBuilder();
 
-        $qb->update($this->table);
+         $qb->update($this->table);
 
-        foreach ($data as $dataKey => $dataValue) {
-            $valuesColumn[$dataKey] = ':' . $dataKey;
-            $valuesData[$dataKey] = $dataValue;
+         foreach ($data as $dataKey => $dataValue) {
+             $valuesColumn[$dataKey] = ':' . $dataKey;
+             $valuesData[$dataKey] = $dataValue;
 
-            $qb->set($dataKey, $valuesColumn[$dataKey]);
-        }
+             $qb->set($dataKey, $valuesColumn[$dataKey]);
+         }
 
-        $qb->setParameters($valuesData)
+         $qb->setParameters($valuesData)
             ->where('id = ' . $id)
             ->execute();
-    }
+     }
 
-    // HardDelete
+// HardDelete
     public function hardDelete($id)
     {
         $qb = $this->db->createQueryBuilder();
 
         $qb->delete($this->table)
+            ->set('deleted', 1)
             ->where('id = ' . $id)
             ->execute();
     }
 
-    // Paginate
+// Paginate
     public function paginate($page, $query, $limit)
     {
         $qb = $this->db->createQueryBuilder();
@@ -100,12 +101,12 @@ abstract class BaseModel
         $total = $getRows['rows'];
         $pages = (int) ceil($total / $perpage);
         $data = array(
-                'options' => array(
-                    'default'   => 1,
-                    'min_range' => 1,
-                    'max_range' => $pages
-                    )
-                );
+            'options' => array(
+            'default'   => 1,
+            'min_range' => 1,
+            'max_range' => $pages
+            )
+        );
 
         $number = (int) $page;
         $range = $perpage * ($number - 1);
@@ -118,4 +119,36 @@ abstract class BaseModel
                    ->execute();
         return $test->fetchAll();
     }
+
+    public function setPaginate(int $page, int $limit)
+    {
+        //count total custom query
+        $total = count($this->fetchAll());
+        //count total pages
+        $pages = (int) ceil($total / $limit);
+
+        // $number = (int) $page;
+        $range = $limit * ($page - 1);
+        $data = $this->query->setFirstResult($range)->setMaxResults($limit);
+        $data = $this->fetchAll();
+        $result = [
+            'total_data'=> $total,
+            'perpage'	=> $limit,
+            'current'	=> $page,
+            'total_page'=> $pages,
+            'data'		=> $data,
+        ];
+        return $result;
+    }
+
+    public function fetchAll()
+    {
+        return $this->query->execute()->fetchAll();
+    }
+
+    public function fetch()
+    {
+        return $this->query->execute()->fetch();
+    }
+
 }
