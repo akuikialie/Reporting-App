@@ -77,13 +77,13 @@ class UserGroupModel extends BaseModel
     {
         $qb = $this->db->createQueryBuilder();
 
-        $qb->select('users.*')
-        ->from($this->jointTable, 'users')
-        ->join('users', $this->table, 'user_group', 'users.id = user_group.user_id')
-        ->where('user_group.group_id = :id')
-        ->setParameter(':id', $groupId);
-        $result = $qb->execute();
-        return $result->fetchAll();
+        $this->query = $qb->select('users.*')
+        	->from($this->jointTable, 'users')
+        	->join('users', $this->table, 'user_group', 'users.id = user_group.user_id')
+        	->where('user_group.group_id = :id')
+        	->setParameter(':id', $groupId);
+        // $result = $qb->execute();
+        return $this;
     }
 
 	public function getUser($groupId, $userId)

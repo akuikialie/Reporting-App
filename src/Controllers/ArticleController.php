@@ -11,7 +11,7 @@ use App\Models\ArticleModel;
 */
 class ArticleController extends BaseController
 {
-
+	//Get all article list
 	function index(Request $request, Response $response)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
@@ -35,6 +35,7 @@ class ArticleController extends BaseController
 		return $data;
 	}
 
+	//Create article
 	public function add(Request $request, Response $response)
 	{
 		$rules = [
@@ -66,6 +67,8 @@ class ArticleController extends BaseController
 
 		return $data;
 	}
+
+	//Edit article
 	public function update(Request $request, Response $response, $args)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
@@ -82,6 +85,7 @@ class ArticleController extends BaseController
 		return $data;
 	}
 
+	//Delete article
 	public function delete(Request $request, Response $response, $args)
 	{
 		$article = new \App\Models\ArticleModel($this->db);

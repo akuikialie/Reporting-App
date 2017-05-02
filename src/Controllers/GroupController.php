@@ -9,7 +9,7 @@ use App\Models\UserGroupModel;
 
 class GroupController extends BaseController
 {
-
+	//Get All Group
 	function index(Request $request, Response $response)
 	{
 		$group = new \App\Models\GroupModel($this->db);
@@ -33,6 +33,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Find group by id
 	function findGroup(Request $request, Response $response, $args)
 	{
 		$group = new \App\Models\GroupModel($this->db);
@@ -47,6 +48,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Create group
 	public function add(Request $request, Response $response)
 	{
 		$rules = [
@@ -78,6 +80,8 @@ class GroupController extends BaseController
 
 		return $data;
 	}
+
+	//Edit group
 	public function update(Request $request, Response $response, $args)
 	{
 		$group = new \App\Models\GroupModel($this->db);
@@ -95,6 +99,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Delete group
 	public function delete(Request $request, Response $response, $args)
 	{
 		$group = new \App\Models\GroupModel($this->db);
@@ -110,6 +115,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Set user as member of group
 	public function setUserGroup(Request $request, Response $response)
 	{
 		$rules = [
@@ -140,13 +146,17 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Get all user in group
 	public function getAllUserGroup(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
 		$finduserGroup = $userGroup->findUsers('group_id', $args['group']);
-		$findAll = $userGroup->findAll($args['group']);
 
 		if ($finduserGroup) {
+			$page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+
+			$findAll = $userGroup->findAll($args['group'])->setPaginate($page, 10);
+
 			$data = $this->responseDetail(200, 'Success', $findAll);
 		} else {
 			$data = $this->responseDetail(404, 'Error', 'User not found in group');
@@ -155,6 +165,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Get one user in group
 	public function getUserGroup(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
@@ -170,6 +181,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Delete user from group
 	public function deleteUser(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
@@ -187,6 +199,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Set user in group as member
 	public function setAsMember(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
@@ -203,6 +216,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Set user in group as PIC
 	public function setAsPic(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
@@ -219,6 +233,7 @@ class GroupController extends BaseController
 		return $data;
 	}
 
+	//Set user in group as guardian
 	public function setAsGuardian(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);

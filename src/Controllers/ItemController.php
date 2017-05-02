@@ -167,6 +167,7 @@ class ItemController extends BaseController
         return $data;
     }
 
+    //Delete item
     public function deleteItem(Request $request, Response $response, $args)
     {
         $item = new Item($this->db);
@@ -187,6 +188,4 @@ class ItemController extends BaseController
         return $this->responsewithJson($data);
 
     }
-
-
 }
