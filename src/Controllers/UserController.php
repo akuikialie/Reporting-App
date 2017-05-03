@@ -89,7 +89,7 @@ class UserController extends BaseController
         return $data;
     }
 
-    //Delete User
+    //Update user account by id
     public function updateUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
@@ -116,6 +116,37 @@ class UserController extends BaseController
         return $data;
     }
 
+    //Update user account
+    public function editAccount($request, $response)
+    {
+        $users = new UserModel($this->db);
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
+
+		$token = $request->getHeader('Authorization')[0];
+		$user = $userToken->find('token', $token);
+        $findUser = $users->find('id', $user['user_id']);
+
+        if ($findUser) {
+            $this->validator->rule('required', ['name', 'email', 'username', 'password', 'gender', 'address', 'phone', 'image']);
+            $this->validator->rule('email', 'email');
+            $this->validator->rule('alphaNum', 'username');
+            $this->validator->rule('numeric', 'phone');
+            $this->validator->rule('lengthMin', ['name', 'email', 'username', 'password'], 5);
+            $this->validator->rule('integer', 'id');
+            if ($this->validator->validate()) {
+                $users->updateData($request->getParsedBody(), $user['user_id']);
+                $data['update data'] = $request->getParsedBody();
+
+                $data = $this->responseDetail(200, 'Succes', 'Update Data Succes', $data);
+            } else {
+                $data = $this->responseDetail(400, 'Errors', $this->validator->errors());
+            }
+        } else {
+            $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
+        }
+        return $data;
+    }
+
     //Find User by id
     public function findUser($request, $response, $args)
     {
@@ -123,7 +154,26 @@ class UserController extends BaseController
         $findUser = $user->find('id', $args['id']);
 
         if ($findUser) {
-            $data = $this->responseDetail(200, 'Succes', 'Update Data Succes', $findUser);
+            $data = $this->responseDetail(200, 'Succes', 'Data available', $findUser);
+        } else {
+            $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
+        }
+
+        return $data;
+    }
+
+    //Find User by id
+    public function detailAccount($request, $response)
+    {
+        $users = new UserModel($this->db);
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
+
+		$token = $request->getHeader('Authorization')[0];
+		$user = $userToken->find('token', $token);
+        $findUser = $users->find('id', $user['user_id']);
+
+        if ($findUser) {
+            $data = $this->responseDetail(200, 'Succes', 'Data available', $findUser);
         } else {
             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
         }

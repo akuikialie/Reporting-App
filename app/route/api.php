@@ -7,9 +7,9 @@ $app->group('', function() use ($app, $container) {
     $app->group('/user', function() use ($app, $container) {
         $this->post('/register', 'App\Controllers\UserController:createUser')->setname('user.add');
         $this->get('/logout', 'App\Controllers\UserController:logout')->setname('user.logout');
-        $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
+        $this->put('/edit', 'App\Controllers\UserController:editAccount')->setname('user.update');
         $this->delete('/delete', 'App\Controllers\UserController:delAccount')->setname('delete.account');
-        $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+        $this->get('/detail', 'App\Controllers\UserController:detailAccount')->setname('user.detail');
         // user get group
         $this->get('/{group}/{id}', 'App\Controllers\GroupController:getUserGroup');
 
