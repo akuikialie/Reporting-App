@@ -32,7 +32,6 @@ class UserController extends BaseController
 
     }
 
-    //Create user account
     public function createUsers($request, $response)
     {
         $this->validator->rule('required', ['name', 'email', 'username', 'password', 'gender', 'address', 'phone', 'image']);
@@ -184,4 +183,17 @@ class UserController extends BaseController
         return $data;
 
     }
+
+     public function logout($request, $response )
+        {
+            $token = $request->getHeader('Authorization')[0];
+
+            $userToken = new UserToken($this->db);
+            $findUser = $userToken->find('token', $token);
+
+            $userToken->delete('user_id',$findUser['user_id']);
+            return $this->responseDetail(200, 'Success', 'Logout Success');
+        }
+
+
 }

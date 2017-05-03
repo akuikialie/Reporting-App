@@ -44,6 +44,7 @@ class UserItem extends BaseModel
         return $result->fetch();
     }
 
+
     public function findAll($column1, $val1)
     {
         $param1 = ':'.$column1;

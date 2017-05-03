@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Middlewares;
 
@@ -12,11 +12,14 @@ class AuthToken extends BaseMiddleware
         $token = $request->getHeader('Authorization')[0];
 
         $userToken = new \App\Models\Users\UserToken($this->container->db);
+        $users = new \App\Models\Users\UserModel($this->container->db);
+
         $findUser = $userToken->find('token', $token);
+        $user = $users->find('id', $findUser['user_id']);
 
         $now = date('Y-m-d H:i:s');
 
-        if (!$findUser || $findUser['expired_at'] < $now) {
+        if (!$findUser || $findUser['expired_date'] < $now) {
             $data['status'] = 401;
             $data['message'] = "You Must Login In";
 
@@ -26,9 +29,10 @@ class AuthToken extends BaseMiddleware
             $response = $next($request, $response);
 
             // Tambah Waktu Token
-            $addTime['expired_at'] = date('Y-m-d H:i:s', strtotime($findUser['expired_at']. '+30 minute'));
+
+            $addTime['expired_date'] = date('Y-m-d H:i:s', strtotime($now. '+30 minute'));
 
             $userToken->update($addTime, 'user_id', $findUser['user_id']);
             return $response;
     }
-} 
+}
