@@ -51,3 +51,10 @@ $app->group('/admin', function() use ($app, $container)  {
     });
 })->add(new \App\Middlewares\AdminMiddleware($container));
 
+ $app->group('/article', function(){
+        $this->get('/list', 'App\Controllers\ArticleController:index')->setName('article.list');
+        $this->put('/edit/{id}', 'App\Controllers\ArticleController:update');
+        $this->post('/add', 'App\Controllers\ArticleController:add');
+        $this->delete('/delete/{id}', 'App\Controllers\ArticleController:delete');
+})->add(new \App\Middlewares\AuthToken($container));
+    

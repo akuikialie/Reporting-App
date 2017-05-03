@@ -194,6 +194,5 @@ class UserController extends BaseController
             $userToken->delete('user_id',$findUser['user_id']);
             return $this->responseDetail(200, 'Success', 'Logout Success');
         }
-
-
 }
+
