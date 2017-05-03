@@ -14,17 +14,10 @@ class UserController extends BaseController
         $getUser = $user->getAllUser();
         $countUser = count($getUser);
 
-<<<<<<< HEAD
-            if ($getUser) {
-                    $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
-                    
-                    $get = $user->paginate($page, $getUser, 5);
-=======
         if ($getUser) {
             $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
 
             $get = $user->paginate($page, $getUser, 5);
->>>>>>> mitschool/fix-all-crud
 
             if ($get) {
                 $data = $this->responseDetail(200, 'Data Available', $get, $this->paginate($countUser, 5, $page, ceil($countUser/5)));
@@ -39,24 +32,6 @@ class UserController extends BaseController
 
     }
 
-<<<<<<< HEAD
-    // public function index($request, $response)
-    // {
-    //     $user = new UserModel($this->db);
-    //     $setUser = $user->getAllUser();
-
-    //     if ($setUser) 
-    //     {
-    //         $data = $this->responseDetail(201, 'Success', 'Create User Succes', $setUser);   
-    //     } else {
-    //         $data = $this->responseDetail(404, 'Error', 'Create User Succes');
-    //     }
-    //         return $data;
-    // }
-
-=======
-    //Create user account
->>>>>>> mitschool/fix-all-crud
     public function createUsers($request, $response)
     {
         $this->validator->rule('required', ['name', 'email', 'username', 'password', 'gender', 'address', 'phone', 'image']);
@@ -208,4 +183,17 @@ class UserController extends BaseController
         return $data;
 
     }
+
+     public function logout($request, $response )
+        {
+            $token = $request->getHeader('Authorization')[0];
+
+            $userToken = new UserToken($this->db);
+            $findUser = $userToken->find('token', $token);
+
+            $userToken->delete('user_id',$findUser['user_id']);
+            return $this->responseDetail(200, 'Success', 'Logout Success');
+        }
+
+
 }

@@ -11,13 +11,13 @@ class AdminMiddleware extends BaseMiddleware
     {
         $token = $request->getHeader('Authorization')[0];
 
-        $userToken = new App\Models\Users\UserToken($this->container->db);
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
         $findToken = $userToken->find('token', $token);
         // var_dump($token);
         // die();
 
 
-        $users = new App\Models\Users\UserModel($this->container->db);
+        $users = new \App\Models\Users\UserModel($this->container->db);
         $findUser = $users->find('id', $findToken['user_id']);
 
         if (!$findUser || $findUser['is_admin'] == 0) {

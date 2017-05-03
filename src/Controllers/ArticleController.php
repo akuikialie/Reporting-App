@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 <?php
-=======
-<?php
->>>>>>> afri/fix-article
 
 namespace App\Controllers;
 
@@ -13,7 +9,7 @@ use App\Models\ArticleModel;
 
 class ArticleController extends BaseController
 {
-	function index(Request $request, Response $response)
+	public function index(Request $request, Response $response)
 	{
 		$article = new \App\Models\ArticleModel($this->db);
 
@@ -39,13 +35,12 @@ class ArticleController extends BaseController
 	public function add(Request $request, Response $response)
 	{
 		$rules = [
-		'required' => [
-		['title'],
-		['content'],
-		['image'],
-		]
+			'required' => [
+				['title'],
+				['content'],
+				['image'],
+			]
 		];
-
 		$this->validator->rules($rules);
 
 		$this->validator->labels([
