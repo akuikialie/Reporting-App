@@ -32,22 +32,22 @@ $container['view'] = function ($container) {
 	$view->addExtension(new Slim\Views\TwigExtension(
 		$container->router, $container->request->getUri())
 	);
-	//
-	// $view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
-	// unset($_SESSION['old']);
-	// $view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
-	// unset($_SESSION['errors']);
+	
+	$view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
+	unset($_SESSION['old']);
+	$view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
+	unset($_SESSION['errors']);
 
-	// $view->getEnvironment()->addGlobal('cart', @$_SESSION['cart']);
-
-	// $view->getEnvironment()->addGlobal('basket', $container->get('basket'));
-
-	// if (@$_SESSION['user']) {
-	// 	$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
-	// }
-
+	if (@$_SESSION['user']) {
+		$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
+	}
 
 	// $view->getEnvironment()->addGlobal('flash', $container->flash);
 
 	return $view;
 };
+
+// $container['flash'] = function ($container) {
+//     return new \Slim\Flash\Messages;
+// };
+
