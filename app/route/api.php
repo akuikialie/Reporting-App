@@ -46,3 +46,8 @@ $app->group('/user', function(){
     $this->post('/item/{group}', 'App\Controllers\UserController:SetItemUser')->setname('user.item');
 
 });
+
+$app->group('/guard', function(){
+    $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+    $this->get('/list/item/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
+})->add(new \App\Middlewares\GuardMiddleware($container));
