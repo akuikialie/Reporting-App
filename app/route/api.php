@@ -30,9 +30,7 @@ $app->group('/item', function(){
     $this->post('/create', 'App\Controllers\ItemController:createItem')->setname('create_item');
     $this->put('/update/{id}', 'App\Controllers\ItemController:updateItem')->setname('update_item');
     $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
-    $this->get('/{group}/{id}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
     $this->post('/{group}/{id}', '\App\Controllers\ItemController:setItemStatus')->setname('item_status');
-    $this->get('/list/user/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
 });
 
 $app->group('/user', function(){
@@ -42,6 +40,8 @@ $app->group('/user', function(){
     $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
     $this->delete('/delete/{id}', 'App\Controllers\UserController:deleteUser')->setname('user.delete');
     $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
+    $this->get('/list/item/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
+    $this->get('/item/{group}/{id}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
 
     $this->post('/item/{group}', 'App\Controllers\UserController:SetItemUser')->setname('user.item');
 
