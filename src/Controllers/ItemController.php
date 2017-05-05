@@ -16,8 +16,12 @@ class ItemController extends BaseController
 
         $getItems = $item->getAll();
 
+        $countItems = count($getItems);
+
         if ($getItems) {
-            $data = $this->responseDetail(200, 'Data Available', $getItems);
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+            $paginate = $itzem->paginate($page, $getItems, 10);
+            $data = $this->responseDetail(200, 'Data Available', $paginate, $this->paginate($countItems, 10, $page, ceil($countItems/10)));
         } else {
             $data = $this->responseDetail(400, 'Data not found', null);
         }
@@ -31,13 +35,25 @@ class ItemController extends BaseController
         $userItem = new UserItem($this->db);
         $item = new Item($this->db);
 
-        $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $args['id']);
+        $token = $request->getHeader('Authorization')[0];
+
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
+        $users = new \App\Models\Users\UserModel($this->container->db);
+
+        $findUser = $userToken->find('token', $token);
+        $user = $users->find('id', $findUser['user_id']);
+
+        $findUserItem = $userItem->findUser('group_id', $args['group'], 'user_id', $user['id']);
+
         $findItem = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItemGroup($args['group'], $args['id']);
-
         if ($findUserItem) {
+            $page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+
+            $getItem = $userItem->getItemGroup($args['group'], $user['id'])->setPaginate($page, 10);
+
             $data = $this->responseDetail(200, 'Data Available', $getItem);
+
         } else {
             $data = $this->responseDetail(400, 'Error', 'User item not found');
 
@@ -47,18 +63,32 @@ class ItemController extends BaseController
     }
 
     //Get all items user
-    public function getAllItemUser(Request $request, Response $response, $args)
+    public function getAllItemUser(Request $request, Response $response)
     {
         $userItem = new UserItem($this->db);
         $item     = new Item($this->db);
 
-        $findUserItem = $userItem->find('user_id', $args['id']);
+        $token = $request->getHeader('Authorization')[0];
+
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
+        $users = new \App\Models\Users\UserModel($this->container->db);
+
+        $findUser = $userToken->find('token', $token);
+        $user = $users->find('id', $findUser['user_id']);
+
+
+        $findItem = $item->find('id', $findUserItem['item_id']);
+
+        $findUserItem = $userItem->find('user_id', $user['id']);
 
         $findItem  = $item->find('id', $findUserItem['item_id']);
 
-        $getItem = $userItem->getItem($args['id']);
 
         if ($findUserItem) {
+            $page = !$request->getQueryParam('page') ?  1 : $request->getQueryParam('page');
+
+            $getItem = $userItem->getItem($user['id'])->setPaginate($page, 10);
+
             $data = $this->responseDetail(200, 'Data available', $getItem);
         } else {
             $data = $this->responseDetail(400, 'Error', 'User item not found');

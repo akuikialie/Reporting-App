@@ -32,7 +32,7 @@ class UserController extends BaseController
 
     }
 
-    public function createUsers($request, $response)
+    public function createUser($request, $response)
     {
         $this->validator->rule('required', ['name', 'email', 'username', 'password', 'gender', 'address', 'phone', 'image']);
         $this->validator->rule('email', 'email');
@@ -52,7 +52,7 @@ class UserController extends BaseController
         return $data;
     }
 
-    //Delete user account
+    //Delete user account by id
     public function deleteUser($request, $response, $args)
     {
         $user = new UserModel($this->db);
@@ -61,6 +61,27 @@ class UserController extends BaseController
         if ($findUser) {
             $user->hardDelete($args['id']);
             $data['id'] = $args['id'];
+            $data = $this->responseDetail(200, 'Succes', 'Data Has Been Deleted', $data);
+        } else {
+            $data = $this->responseDetail(400, 'Errors', 'Data Not Found');
+        }
+        return $data;
+    }
+
+    //Delete user account
+    public function delAccount($request, $response)
+    {
+        $users = new UserModel($this->db);
+        $userToken = new \App\Models\Users\UserToken($this->container->db);
+
+		$token = $request->getHeader('Authorization')[0];
+
+		$findUser = $userToken->find('token', $token);
+        $user = $users->find('id', $findUser['user_id']);
+
+        if ($user) {
+            $users->hardDelete($user['id']);
+            $data['id'] = $user['id'];
             $data = $this->responseDetail(200, 'Succes', 'Data Has Been Deleted', $data);
         } else {
             $data = $this->responseDetail(400, 'Errors', 'Data Not Found');

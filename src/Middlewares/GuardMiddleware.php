@@ -1,38 +1,33 @@
-<?php
+<?php 
 
 namespace App\Middlewares;
 
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 
-class AuthToken extends BaseMiddleware
+class GuardMiddleware extends BaseMiddleware
 {
     public function __invoke($request, $response, $next)
     {
         $token = $request->getHeader('Authorization')[0];
 
         $userToken = new \App\Models\Users\UserToken($this->container->db);
+        $userGroup = new \App\Models\UserGroupModel($this->container->db);
         $users = new \App\Models\Users\UserModel($this->container->db);
 
-        $findUser = $userToken->find('token', $token);
-        $user = $users->find('id', $findUser['user_id']);
-
-        $now = date('Y-m-d H:i:s');
-
-        if (!$findUser || $findUser['expired_date'] < $now) {
+        $findToken = $userToken->find('token', $token);
+        $findUser = $users->find('id', $findToken['user_id']);
+        $findGuard = $userGroup->find('user_id', $findToken['user_id']);
+// var_dump(expression)
+        if (!$findUser || $findUser['is_admin'] == 1 || $findGuard['status'] != 2) {
             $data['status'] = 401;
-            $data['message'] = "You Must Login In";
+            $data['message'] = "You Are Not Guard";
 
             return $response->withHeader('Content-type', 'application/json')->withJson($data, $data['status']);
         }
 
             $response = $next($request, $response);
 
-            // Tambah Waktu Token
-
-            $addTime['expired_date'] = date('Y-m-d H:i:s', strtotime($now. '+30 minute'));
-
-            $userToken->update($addTime, 'user_id', $findUser['user_id']);
             return $response;
     }
 }

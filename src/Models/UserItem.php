@@ -44,9 +44,9 @@ class UserItem extends BaseModel
         return $result->fetch();
     }
 <<<<<<< HEAD
-    
-}
 =======
+
+>>>>>>> irsad/fix_crud_item
 
     public function findAll($column1, $val1)
     {
@@ -69,16 +69,16 @@ class UserItem extends BaseModel
             ':group_id' => $groupId
         ];
 
-        $qb->select('it.name', 'it.description', 'it.recurrent', 'it.start_date', 'it.end_date', 'it.status')
+        $this->query = $qb->select('it.name', 'it.description', 'it.recurrent', 'it.start_date', 'it.end_date', 'it.status')
         ->from($this->jointTable, 'it')
         ->join('it', $this->table, 'ui', 'ui.item_id = it.id')
         ->where('ui.user_id = :user_id')
         ->andWhere('ui.group_id = :group_id')
         ->setParameters($parameters);
 
-        $result = $qb->execute();
+        // $result = $qb->execute();
 
-        return $result->fetchAll();
+        return $this;
     }
 
     public function getItem($id)
@@ -86,16 +86,14 @@ class UserItem extends BaseModel
         $qb = $this->db->createQueryBuilder();
 
 
-        $qb->select('it.name', 'it.description', 'it.recurrent', 'it.start_date', 'it.end_date', 'it.status')
+        $this->query = $qb->select('it.name', 'it.description', 'it.recurrent', 'it.start_date', 'it.end_date', 'it.status')
         ->from($this->jointTable, 'it')
         ->join('it', $this->table, 'ui', 'ui.item_id = it.id')
         ->where('ui.user_id = :user_id')
         ->setParameter(':user_id', $id);
 
-        $result = $qb->execute();
+        // $result = $qb->execute();
 
-        return $result->fetchAll();
+        return $this;
     }
-
 }
->>>>>>> mitschool/fix-all-crud

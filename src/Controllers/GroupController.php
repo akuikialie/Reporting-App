@@ -150,16 +150,27 @@ class GroupController extends BaseController
 	public function getAllUserGroup(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
+		$users = new \App\Models\Users\UserModel($this->container->db);
+		$userToken = new \App\Models\Users\UserToken($this->container->db);
+
 		$finduserGroup = $userGroup->findUsers('group_id', $args['group']);
+		$token = $request->getHeader('Authorization')[0];
+		$findUser = $userToken->find('token', $token);
+		$group = $userGroup->findUser('user_id', $findUser['user_id'], 'group_id', $args['group']);
+		$user = $users->find('id', $findUser['user_id']);
 
-		if ($finduserGroup) {
-			$page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
+		if ($group) {
+			if ($finduserGroup || $user['is_admin'] == 1) {
+				$page = !$request->getQueryParam('page') ? 1 : $request->getQueryParam('page');
 
-			$findAll = $userGroup->findAll($args['group'])->setPaginate($page, 10);
+				$findAll = $userGroup->findAll($args['group'])->setPaginate($page, 10);
 
-			$data = $this->responseDetail(200, 'Success', $findAll);
+				$data = $this->responseDetail(200, 'Success', $findAll);
+			} else {
+				$data = $this->responseDetail(404, 'Error', 'User not found in group');
+			}
 		} else {
-			$data = $this->responseDetail(404, 'Error', 'User not found in group');
+			$data = $this->responseDetail(404, 'Error', 'You are not registered in this group');
 		}
 
 		return $data;
@@ -169,13 +180,24 @@ class GroupController extends BaseController
 	public function getUserGroup(Request $request, Response $response, $args)
 	{
 		$userGroup = new \App\Models\UserGroupModel($this->db);
-		$finduserGroup = $userGroup->findUser('group_id', $args['group'], 'user_id', $args['id']);
-		$findUser = $userGroup->getUser($args['group'], $args['id']);
+		$users = new \App\Models\Users\UserModel($this->container->db);
+		$userToken = new \App\Models\Users\UserToken($this->container->db);
 
-		if ($finduserGroup) {
-			$data = $this->responseDetail(200, 'Success', $findUser);
+		$finduserGroup = $userGroup->findUser('group_id', $args['group'], 'user_id', $args['id']);
+		$token = $request->getHeader('Authorization')[0];
+		$findUser = $userToken->find('token', $token);
+		$group = $userGroup->findUser('user_id', $findUser['user_id'], 'group_id', $args['group']);
+		$user = $users->find('id', $findUser['user_id']);
+		$getUser = $userGroup->getUser($args['group'], $args['id']);
+
+		if ($group) {
+			if ($finduserGroup) {
+				$data = $this->responseDetail(200, 'Success', $getUser);
+			} else {
+				$data = $this->responseDetail(404, 'Error', 'User not found in group');
+			}
 		} else {
-			$data = $this->responseDetail(404, 'Error', 'User not found in group');
+			$data = $this->responseDetail(404, 'Error', 'You are not registered in this group');
 		}
 
 		return $data;
