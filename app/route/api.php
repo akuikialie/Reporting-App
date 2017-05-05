@@ -7,19 +7,18 @@ $app->group('', function() use ($app, $container) {
     $app->group('/user', function() use ($app, $container) {
         $this->post('/register', 'App\Controllers\UserController:createUser')->setname('user.add');
         $this->get('/logout', 'App\Controllers\UserController:logout')->setname('user.logout');
-        $this->put('/edit', 'App\Controllers\UserController:editAccount')->setname('user.update');
+        $this->put('/edit', 'App\Controllers\UserController:editAccount')->setname('edit.account');
         $this->delete('/delete', 'App\Controllers\UserController:delAccount')->setname('delete.account');
         $this->get('/detail', 'App\Controllers\UserController:detailAccount')->setname('user.detail');
-        // user get group
         $this->get('/{group}/{id}', 'App\Controllers\GroupController:getUserGroup');
+        $this->get('/item/lists', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
+        $this->get('/item/{group}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
+        $this->get('/article', 'App\Controllers\ArticleController:index')->setName('article.list');
 
-        // user get all item
-        $this->get('/item/list/all', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
-        // user get item in group
-        $this->get('/item/group/{group}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
     });
 
     $app->group('/admin', function() use ($app, $container)  {
+        $app->get('/logout', 'App\Controllers\UserController:logout')->setname('user.logout');
         $app->group('/article', function(){
             $this->get('/list', 'App\Controllers\ArticleController:index')->setName('article.list');
             $this->put('/edit/{id}', 'App\Controllers\ArticleController:update');
@@ -62,6 +61,7 @@ $app->group('', function() use ($app, $container) {
 
 
     $app->group('/pic', function() use ($app, $container)  {
+        $app->get('/logout', 'App\Controllers\UserController:logout')->setname('user.logout');
         $app->group('/article', function(){
             $this->get('/list', 'App\Controllers\ArticleController:index')->setName('article.list');
         });
@@ -76,20 +76,23 @@ $app->group('', function() use ($app, $container) {
             $this->post('/create', 'App\Controllers\ItemController:createItem')->setname('create_item');
             $this->put('/update/{id}', 'App\Controllers\ItemController:updateItem')->setname('update_item');
             $this->delete('/delete/{id}', 'App\Controllers\ItemController:deleteItem')->setname('delete_item');
-            $this->get('/{group}/{id}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
+            $this->get('/item/lists', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
+            $this->get('/item/{group}', '\App\Controllers\ItemController:getItemUser')->setname('item_user');
             $this->post('/{group}/{id}', '\App\Controllers\ItemController:setItemStatus')->setname('item_status');
-            $this->get('/list/user/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
         });
         $app->group('/user', function(){
+            $this->post('/register', 'App\Controllers\UserController:createUser')->setname('user.add');
+            $this->put('/edit', 'App\Controllers\UserController:editAccount')->setname('edit.account');
+            $this->delete('/delete', 'App\Controllers\UserController:delAccount')->setname('delete.account');
+            $this->get('/detail', 'App\Controllers\UserController:detailAccount')->setname('user.detail');
             $this->get('/list', 'App\Controllers\UserController:index')->setname('user.list');
-            $this->put('/update/{id}', 'App\Controllers\UserController:updateUser')->setname('user.update');
             $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
             $this->post('/item/{group}', 'App\Controllers\UserController:SetItemUser')->setname('user.item');
         });
     })->add(new \App\Middlewares\PicMiddleware($container));
 
-
     $app->group('/guard', function(){
+        $this->get('/logout', 'App\Controllers\UserController:logout')->setname('user.logout');
         $this->get('/find/{id}', 'App\Controllers\UserController:findUser')->setname('user.find');
         $this->get('/list/item/{id}', '\App\Controllers\ItemController:getAllItemUser')->setname('all_item_user');
     })->add(new \App\Middlewares\GuardMiddleware($container));
