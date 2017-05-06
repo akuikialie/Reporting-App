@@ -43,10 +43,6 @@ class UserItem extends BaseModel
         $result = $qb->execute();
         return $result->fetch();
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> irsad/fix_crud_item
 
     public function findAll($column1, $val1)
     {
