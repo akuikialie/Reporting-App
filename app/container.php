@@ -51,3 +51,7 @@ $container['view'] = function ($container) {
 
 	return $view;
 };
+
+$container['flash'] = function ($container) {
+	return new \Slim\Flash\Messages;
+};
