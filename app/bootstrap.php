@@ -11,4 +11,5 @@ $app = new App([
 	]);
 
 require __DIR__. '/container.php';
-require __DIR__. '/route/api.php';
+require __DIR__. '/routes/api.php';
+require __DIR__. '/routes/web.php';

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\web;
 
 class HomeController extends BaseController
 {
         public function index($request, $response)
         {
-        	$data = $this->responseDetail(200, 'Success', 'Selamat Datang Di reporting App');
-
+        	$data = $this->view->render($response, 'index.twig');
+            
        		return $data;
         }
 }

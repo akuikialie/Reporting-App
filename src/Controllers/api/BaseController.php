@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\api;
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -21,12 +21,12 @@ abstract class BaseController
 		return $this->container->{$property};
 	}
 
-// Detail ResponseWithJson API 
+// Detail ResponseWithJson API
 	public function responseWithJson(array $data)
 	{
 		return $this->response->withHeader('Content-type', 'application/json')->withJson($data, $data['status']);
 	}
-// Detail ResponseWithJson API 
+// Detail ResponseWithJson API
 	public function responseDetail($status, $message, $data, array $meta = null)
 	{
 		$response = [

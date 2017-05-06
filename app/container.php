@@ -24,3 +24,30 @@ $container['validator'] = function (Container $container) {
 
 	return new Valitron\Validator($params, [], $setting);
 };
+
+$container['view'] = function ($container) {
+	$setting = $container->get('settings')['view'];
+	$view = new \Slim\Views\Twig($setting['path'], $setting['twig']);
+
+	$view->addExtension(new Slim\Views\TwigExtension(
+		$container->router, $container->request->getUri())
+	);
+	//
+	// $view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
+	// unset($_SESSION['old']);
+	// $view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
+	// unset($_SESSION['errors']);
+
+	// $view->getEnvironment()->addGlobal('cart', @$_SESSION['cart']);
+
+	// $view->getEnvironment()->addGlobal('basket', $container->get('basket'));
+
+	// if (@$_SESSION['user']) {
+	// 	$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
+	// }
+
+
+	// $view->getEnvironment()->addGlobal('flash', $container->flash);
+
+	return $view;
+};

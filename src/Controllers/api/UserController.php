@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\api;
 
 use App\Models\Users\UserModel;
 use App\Models\Users\UserToken;
