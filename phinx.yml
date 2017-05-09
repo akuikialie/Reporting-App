@@ -17,17 +17,10 @@ environments:
     development:
         adapter: mysql
         host: db
-<<<<<<< HEAD
         name: reporting
         user: root
         pass: 'mustaqim'
         port: 3636
-=======
-        name: reporting-app
-        user: root
-        pass: 'apple'
-        port: 3306
->>>>>>> afri/fix-GuarMiddleware
         charset: utf8
 
     testing:

@@ -42,12 +42,13 @@ $container['view'] = function ($container) {
 		$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
 	}
 
-	// $view->getEnvironment()->addGlobal('flash', $container->flash);
+	$view->getEnvironment()->addGlobal('flash', $container->flash);
 
 	return $view;
 };
 
-// $container['flash'] = function ($container) {
-//     return new \Slim\Flash\Messages;
-// };
+$container['flash'] = function ($container) {
+	return new \Slim\Flash\Messages;
+};
+
 
