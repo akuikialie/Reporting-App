@@ -51,4 +51,3 @@ $container['flash'] = function ($container) {
 	return new \Slim\Flash\Messages;
 };
 
-

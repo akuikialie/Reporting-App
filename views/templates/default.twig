@@ -2,6 +2,12 @@
 <html>
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.min.css">
+
+
+<script src="https://cdn.jsdelivr.net/sweetalert2/6.6.2/sweetalert2.min.js"></script>
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/AdminLTE.min.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/css/skins/_all-skins.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -11,41 +17,45 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.min.css">
 
-	<link rel="stylesheet" href="{{base_url}}../assets/sweetalert2/sweetalert2.min.css">
-	<script src="{{base_url}}../assets/sweetalert2/sweetalert2.min.js" type="text/javascript"></script> 
-	{% block css %}	{% endblock %}
-	
-	<title>{% block title %} {% endblock %}</title>
+    {% block css %} {% endblock %}
+    
+    <title>{% block title %} {% endblock %}</title>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
-	<div class="wrapper">
+    <div class="wrapper">
 
-		<!-- Header Navigation -->
-		{% include 'templates/partials/headerNav.twig' %}
-		<!-- Sidebar Navigation -->
-		<aside class="main-sidebar">
-			{% include 'templates/partials/sidebarNav.twig' %}
-		</aside>
-		<!-- Content -->
-		<div class="content-wrapper">
-		<section class="content-header">
-			<h1>{% block headContent %}	{% endblock %}</h1>
-			<ol class="breadcrumb">
-				<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-				<li class="active">Here</li>
-			</ol>
-		</section>
-			<section class="content">
-		{% include 'templates/partials/flash.twig' %}
-				{% block content %}	{% endblock %}
-			</section>
-		</div>
-		<!-- Footer -->
-		{% include 'templates/partials/footer.twig' %}
-	</div>
+        <!-- Header Navigation -->
+        {% include 'templates/partials/headerNav.twig' %}
+        <!-- Sidebar Navigation -->
+        <aside class="main-sidebar">
+            {% include 'templates/partials/sidebarNav.twig' %}
+        </aside>
+        <!-- Content -->
+        <div class="content-wrapper">
+        <section class="content-header">
+            <h1>{% block headContent %} {% endblock %}</h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li class="active">Here</li>
+            </ol>
+        </section>
+            <section class="content">
+        {% include 'templates/partials/flash.twig' %}
+                {% block content %} {% endblock %}
+            </section>
+        </div>
+        <!-- Footer -->
+        {% include 'templates/partials/footer.twig' %}
+    </div>
 </body>
 
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
+<!-- Include a polyfill for ES6 Promises (optional) for IE11 and Android browser -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/js/app.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.11/js/demo.js"></script>
@@ -54,10 +64,8 @@
 
 <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.min.js"></script>
-<!-- 
-<script type="text/javascript">
-	$('select').select2();</script>
- -->
+
+
 <script src="https://cdn.datatables.net/1.10.13/js/dataTables.bootstrap.min.js"></script>
 <script>
 $(function () {
@@ -71,5 +79,6 @@ $(function () {
     });
   });
 </script>
+
 {% block script %} {% endblock %}
 </html>

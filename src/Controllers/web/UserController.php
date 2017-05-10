@@ -162,7 +162,7 @@ class UserController extends BaseController
     {
         $user = new UserModel($this->db);
         $hardDelete = $user->hardDelete($args['id']);
-        $this->flash->addMessage('delete', '!');
+        $this->flash->addMessage('delete', '');
         return $response->withRedirect($this->router
                         ->pathFor('user.trash'));
     }
