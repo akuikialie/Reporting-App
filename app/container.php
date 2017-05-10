@@ -32,11 +32,11 @@ $container['view'] = function ($container) {
 	$view->addExtension(new Slim\Views\TwigExtension(
 		$container->router, $container->request->getUri())
 	);
-	//
-	// $view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
-	// unset($_SESSION['old']);
-	// $view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
-	// unset($_SESSION['errors']);
+
+	$view->getEnvironment()->addGlobal('old', @$_SESSION['old']);
+	unset($_SESSION['old']);
+	$view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
+	unset($_SESSION['errors']);
 
 	// $view->getEnvironment()->addGlobal('cart', @$_SESSION['cart']);
 
@@ -47,7 +47,7 @@ $container['view'] = function ($container) {
 	// }
 
 
-	// $view->getEnvironment()->addGlobal('flash', $container->flash);
+	$view->getEnvironment()->addGlobal('flash', $container->flash);
 
 	return $view;
 };

@@ -19,13 +19,24 @@ class GroupModel extends BaseModel
 		return $this->db->lastInsertId();
 	}
 
-	// public function getAllData()
-    // {
-    //     $qb = $this->db->createQueryBuilder();
-    //     $qb->select('*')
-    //         ->from($this->table);
-    //     $query = $qb->execute();
-    //     return $query->fetchAll();
-    // }
+	public function getInActive()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
+            ->from($this->table)
+            ->where('deleted = 1');
+        $query = $qb->execute();
+        return $query->fetchAll();
+    }
+
+	public function restore($id)
+	{
+		$qb = $this->db->createQueryBuilder();
+
+		$qb->update($this->table)
+		   ->set('deleted', 0)
+		   ->where('id = ' . $id)
+		   ->execute();
+	}
 }
 ?>

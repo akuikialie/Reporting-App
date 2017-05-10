@@ -5,10 +5,9 @@ namespace App\Models;
 class UserGroupModel extends BaseModel
 {
 	protected $table = 'user_group';
-	protected $joinTable = 'users';
-
 	protected $column = ['group_id', 'user_id', 'status'];
 
+	//Set user as member group
 	function add(array $data)
 	{
 		$data = [
@@ -20,6 +19,7 @@ class UserGroupModel extends BaseModel
 		return $this->db->lastInsertId();
 	}
 
+	//Find all user user by column
 	public function findUsers($column, $value)
     {
         $param = ':'.$column;
@@ -32,6 +32,7 @@ class UserGroupModel extends BaseModel
         return $result->fetchAll();
     }
 
+	//Find one user user by column
 	public function findUser($column1, $val1, $column2, $val2)
 	{
 		$param1 = ':'.$column1;
@@ -46,6 +47,7 @@ class UserGroupModel extends BaseModel
 		return $result->fetch();
 	}
 
+	//Set user in group as PIC
 	public function setPic($id)
 	{
 		$qb = $this->db->createQueryBuilder();
@@ -55,6 +57,7 @@ class UserGroupModel extends BaseModel
 		   ->execute();
 	}
 
+	//Set user in group as guardian
 	public function setGuardian($id)
 	{
 		$qb = $this->db->createQueryBuilder();
@@ -64,6 +67,7 @@ class UserGroupModel extends BaseModel
 		   ->execute();
 	}
 
+	//Set user in group as member
 	public function setUser($id)
 	{
 		$qb = $this->db->createQueryBuilder();
@@ -73,35 +77,58 @@ class UserGroupModel extends BaseModel
 		   ->execute();
 	}
 
+	// Get all user in group by group id
 	public function findAll($groupId)
     {
         $qb = $this->db->createQueryBuilder();
 
-        $this->query = $qb->select('users.*')
-        	->from($this->jointTable, 'users')
-        	->join('users', $this->table, 'user_group', 'users.id = user_group.user_id')
-        	->where('user_group.group_id = :id')
-        	->setParameter(':id', $groupId);
-        // $result = $qb->execute();
+        $this->query = $qb->select('users.*', 'user_group.*')
+         	 ->from('users', 'users')
+        	 ->join('users', $this->table, 'user_group', 'users.id = user_group.user_id')
+        	 ->where('user_group.group_id = :id')
+        	 ->setParameter(':id', $groupId);
+
         return $this;
     }
 
+	//Get all users are not registered in group
+	public function notMember($groupId)
+	{
+		$qb = $this->db->createQueryBuilder();
+
+		$query1 = $qb->select('user_id')
+					 ->from($this->table)
+					 ->where('group_id =' . $groupId)
+					 ->execute();
+
+		$qb1 = $this->db->createQueryBuilder();
+
+		$this->query = $qb1->select('u.*')
+			 ->from($this->table, 'ug')
+	 		 ->join('ug', 'users', 'u', $qb1->expr()->notIn('u.id', $query1))
+			 ->groupBy('u.id');
+
+		return $this;
+	}
+
+	//Get user by user id & group id
 	public function getUser($groupId, $userId)
-   {
-	   $qb = $this->db->createQueryBuilder();
-	   $parameters = [
-		   ':user_id' => $userId,
-		   ':group_id' => $groupId
-	   ];
-	   $qb->select('users.name', 'users.email', 'users.gender', 'users.address', 'users.image','users.phone')
-	   ->from($this->jointTable, 'users')
-	   ->join('users', $this->table, 'ug', 'ug.user_id = users.id')
-	   ->where('ug.user_id = :user_id')
-	   ->andWhere('ug.group_id = :group_id')
-	   ->setParameters($parameters);
-	   $result = $qb->execute();
-	   return $result->fetchAll();
-   }
+	{
+		$qb = $this->db->createQueryBuilder();
+		$parameters = [
+			':user_id' => $userId,
+			':group_id' => $groupId
+		];
+		$qb->select('users.name', 'users.email', 'users.gender', 'users.address', 'users.image','users.phone')
+		   ->from('users', 'users')
+		   ->join('users', $this->table, 'ug', 'ug.user_id = users.id')
+		   ->where('ug.user_id = :user_id')
+		   ->andWhere('ug.group_id = :group_id')
+		   ->setParameters($parameters);
+
+		$result = $qb->execute();
+		return $result->fetchAll();
+	}
 }
 
 ?>

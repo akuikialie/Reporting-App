@@ -78,6 +78,17 @@ abstract class BaseModel
             ->execute();
      }
 
+     public function softDelete($id)
+     {
+         $qb = $this->db->createQueryBuilder();
+
+         $qb->update($this->table)
+            ->set('deleted', 1)
+            ->where('id = ' . $id)
+            ->execute();
+     }
+
+
 // HardDelete
     public function hardDelete($id)
     {

@@ -1,0 +1,16 @@
+{% extends 'templates/default.twig' %}
+
+{% block title %} Admin | Group  {% endblock %}
+
+{% block headContent %} Groups Admin Panel {% endblock %}
+
+{% block content %}
+    <div class="row">
+		<div class="col-md-9">
+			<div class="panel box-body">
+				{% include 'admin/group/partials/groups.twig' %}
+			</div>
+		</div>
+        {% include 'admin/group/partials/all-detail.twig' %}
+    </div>
+{% endblock %}
