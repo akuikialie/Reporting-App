@@ -10,92 +10,90 @@ abstract class BaseModel
     protected $qb;
 
     public function __construct($db)
-        {
-            $this->db = $db;
-
-        }
+    {
+        $this->db = $db;
+    }
 
 // Get All
     public function getAll()
-        {
-            $qb = $this->db->createQueryBuilder();
-                $qb->select('*')
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
                                  ->from($this->table)
                                  ->where('deleted = 0');
-                $query = $qb->execute();
-                return $query->fetchAll();
-        }
+        $query = $qb->execute();
+
+        return $query->fetchAll();
+    }
 
 // Find 
     public function find($column, $value)
-        {
-
+    {
         $param = ':'.$column;
         $qb = $this->db->createQueryBuilder();
-            $qb
+        $qb
                    ->select('*')
                    ->from($this->table)
                    ->setParameter($param, $value)
-                   ->where($column . ' = '. $param);
-            $result = $qb->execute();
-            return $result->fetch();
+                   ->where($column.' = '.$param);
+        $result = $qb->execute();
 
-
-        }
+        return $result->fetch();
+    }
 
 // Craete Data
     public function createData(array $data)
-        {
-                $valuesColumn = [];
-                $valuesData = [];
+    {
+        $valuesColumn = [];
+        $valuesData = [];
 
-                foreach ($data as $dataKey => $dataValue) {
-                        $valuesColumn[$dataKey] = ':' . $dataKey;
-                        $valuesData[$dataKey] = $dataValue;
-                }
+        foreach ($data as $dataKey => $dataValue) {
+            $valuesColumn[$dataKey] = ':'.$dataKey;
+            $valuesData[$dataKey] = $dataValue;
+        }
 
-            $qb = $this->db->createQueryBuilder();
+        $qb = $this->db->createQueryBuilder();
 
-                $qb->insert($this->table)
+        $qb->insert($this->table)
                                  ->values($valuesColumn)
                                  ->setParameters($valuesData)
                                  ->execute();
-        }
+    }
 
 // Update Data
      public function updateData(array $data, $id)
-        {
-                $valuesColumn = [];
-                $valuesData = [];
-                $qb = $this->db->createQueryBuilder();
+     {
+         $valuesColumn = [];
+         $valuesData = [];
+         $qb = $this->db->createQueryBuilder();
 
-                $qb->update($this->table);
+         $qb->update($this->table);
 
-                foreach ($data as $dataKey => $dataValue) {
-                        $valuesColumn[$dataKey] = ':' . $dataKey;
-                        $valuesData[$dataKey] = $dataValue;
+         foreach ($data as $dataKey => $dataValue) {
+             $valuesColumn[$dataKey] = ':'.$dataKey;
+             $valuesData[$dataKey] = $dataValue;
 
-                        $qb->set($dataKey, $valuesColumn[$dataKey]);
-                }
+             $qb->set($dataKey, $valuesColumn[$dataKey]);
+         }
 
-                $qb->setParameters($valuesData)
-                                 ->where('id = ' . $id)
+         $qb->setParameters($valuesData)
+                                 ->where('id = '.$id)
                                  ->execute();
-        }
+     }
 
 // HardDelete
     public function hardDelete($id)
-        {
-            $qb = $this->db->createQueryBuilder();
+    {
+        $qb = $this->db->createQueryBuilder();
 
-                $qb->delete($this->table)
+        $qb->delete($this->table)
                                  ->set('deleted', 1)
-                                 ->where('id = ' . $id)
+                                 ->where('id = '.$id)
                                  ->execute();
-        }
+    }
 
 // Paginate
-        
+
     public function paginate($page, $query, $limit)
     {
         $qb = $this->db->createQueryBuilder();
@@ -108,12 +106,12 @@ abstract class BaseModel
         $pages = (int) ceil($total / $perpage);
         $data = array(
             'options' => array(
-            'default'   => 1,
+            'default' => 1,
             'min_range' => 1,
-            'max_range' => $pages
-            )
+            'max_range' => $pages,
+            ),
         );
-        
+
         $number = (int) $page;
         $range = $perpage * ($number - 1);
         // if ($page >= 2) {
@@ -125,8 +123,7 @@ abstract class BaseModel
                    ->setFirstResult($range)
                    ->setMaxResults($limit)
                    ->execute();
+
         return $test->fetchAll();
     }
-
 }
-
