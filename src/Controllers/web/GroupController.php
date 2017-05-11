@@ -154,27 +154,26 @@ class GroupController extends BaseController
 	public function update($request, $response, $args)
 	{
 		$group = new GroupModel($this->db);
-		$rules = [
-		'required' => [['name'], ['description']] ];
+		$rules = ['required' => [['name'], ['description']] ];
 
 		$this->validator->rules($rules);
 		$this->validator->labels([
-		'name' 			=>	'Name',
-		'description'	=>	'Description',
-		'image'			=>	'Image',
-		]);
-
-		$storage = new \Upload\Storage\FileSystem('assets/images');
-		$file = new \Upload\File('image', $storage);
-		$file->setName(uniqid());
-		$file->addValidations(array(
-		new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
-		'image/jpg', 'image/jpeg')),
-		new \Upload\Validation\Size('5M')
-		));
+						'name' 			=>	'Name',
+						'description'	=>	'Description',
+						'image'			=>	'Image',
+						]);
 
 		if ($this->validator->validate()) {
 			if (!empty($file)) {
+
+				$storage = new \Upload\Storage\FileSystem('assets/images');
+				$file = new \Upload\File('image', $storage);
+				$file->setName(uniqid());
+				$file->addValidations(array(
+				new \Upload\Validation\Mimetype(array('image/png', 'image/gif',
+				'image/jpg', 'image/jpeg')),
+				new \Upload\Validation\Size('5M')
+				));
 
 				$dataImg = array(
 				'name'       => $file->getNameWithExtension(),

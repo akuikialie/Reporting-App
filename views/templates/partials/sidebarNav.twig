@@ -14,7 +14,7 @@
     <ul class="sidebar-menu">
         <li class="header">NAVIGATION MENU</li>
         <li class="treeview">
-            <a href="#"><i class="fa ion-ios-speedometer fa-lg"></i>
+            <a href="{{path_for('home')}}"><i class="fa ion-ios-speedometer fa-lg"></i>
             <span>HOME</span></a>
         </li class="treeview">
         <li class="treeview">
@@ -25,9 +25,9 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="#">Group List</a></li>
-                <li><a href="#">Add Group</a></li>
-                <li><a href="#">Group Inactive</a></li>
+                <li><a href="{{path_for('group.list')}}">Group List</a></li>
+                <li><a href="{{path_for('create.group.get')}}">Add Group</a></li>
+                <li><a href="{{path_for('group.inactive')}}">Group Inactive</a></li>
             </ul>
         </li>
         <li class="treeview">
@@ -38,9 +38,9 @@
                 </span>
             </a>
             <ul class="treeview-menu">
-                <li><a href="#">User List</a></li>
-                <li><a href="#">Create User</a></li>
-                <li><a href="#">User Inactive</a></li>
+                <li><a href="{{path_for('user.list.all')}}">User List</a></li>
+                <li><a href="{{path_for('user.create')}}">Create User</a></li>
+                <li><a href="{{path_for('user.trash')}}">User Inactive</a></li>
             </ul>
         </li>
         <li class="treeview">

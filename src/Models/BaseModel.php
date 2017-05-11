@@ -25,6 +25,16 @@ abstract class BaseModel
         return $query->fetchAll();
     }
 
+ public function trash()
+    {
+        $qb = $this->db->createQueryBuilder();
+        $qb->select('*')
+            ->from($this->table)
+            ->where('deleted = 1');
+        $query = $qb->execute();
+        return $query->fetchAll();
+    }
+
 // Find
     public function find($column, $value)
     {
@@ -59,7 +69,7 @@ abstract class BaseModel
 
 // Update Data
      public function updateData(array $data, $id)
-     {
+         {
          $valuesColumn = [];
          $valuesData = [];
          $qb = $this->db->createQueryBuilder();
@@ -78,18 +88,27 @@ abstract class BaseModel
             ->execute();
      }
 
-     public function softDelete($id)
-     {
-         $qb = $this->db->createQueryBuilder();
+     public function restoreData($id)
+    {
+        $qb = $this->db->createQueryBuilder();
 
-         $qb->update($this->table)
+        $qb->update($this->table)
+                 ->set('deleted', 0)
+                 ->where('id = ' . $id)
+                 ->execute();
+    }
+
+    public function softDelete($id)
+    {
+        $qb = $this->db->createQueryBuilder();
+
+        $qb->update($this->table)
             ->set('deleted', 1)
             ->where('id = ' . $id)
             ->execute();
-     }
+    }
 
-
-// HardDelete
+    // HardDelete
     public function hardDelete($id)
     {
         $qb = $this->db->createQueryBuilder();

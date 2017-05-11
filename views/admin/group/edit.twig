@@ -5,13 +5,11 @@
 {% block headContent %} Group Edit {% endblock %}
 
 {% block content %}
+
 <div class="row">
 	{% include 'admin/group/partials/image.twig' %}
-<!-- <div class="container" style="margin-top:30px"> -->
 	<div class="col-md-9">
-			<!-- <div class="col-md-8 col-md-offset-1"> -->
 		<div class="panel panel-default">
-			<!-- <div class="panel-heading"><h3 class="panel-title"><strong>Edit Group</strong></h3></div> -->
 			<div class="panel-body">
 				<form action="{{ path_for('edit.group.post', {id: group.id}) }}" method="POST" enctype="multipart/form-data">
 					{% if errors %}
@@ -33,11 +31,11 @@
 					<div class="row">
 						<div class="col-xs-12 col-sm-4 col-md-7">
 							<div class="form-group {{ errors.image ? 'has-error' : '' }}">
-							<label for="image">Image</label>
-							<input type="file" name="image" id="image" class="form-control" value="{{ group.image }}">
-							{% if errors.image %}
-							<span class="help-block">{{errors.image | first}}</span>
-							{% endif %}
+								<label for="image">Image</label>
+								<input type="file" name="image" id="image" class="form-control" value="{{ group.image }}">
+								{% if errors.image %}
+								<span class="help-block">{{errors.image | first}}</span>
+								{% endif %}
 							</div>
 						</div>
 					</div>

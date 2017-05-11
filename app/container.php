@@ -38,14 +38,9 @@ $container['view'] = function ($container) {
 	$view->getEnvironment()->addGlobal('errors', @$_SESSION['errors']);
 	unset($_SESSION['errors']);
 
-	// $view->getEnvironment()->addGlobal('cart', @$_SESSION['cart']);
-
-	// $view->getEnvironment()->addGlobal('basket', $container->get('basket'));
-
-	// if (@$_SESSION['user']) {
-	// 	$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
-	// }
-
+	if (@$_SESSION['user']) {
+		$view->getEnvironment()->addGlobal('user', $_SESSION['user']);
+	}
 
 	$view->getEnvironment()->addGlobal('flash', $container->flash);
 
